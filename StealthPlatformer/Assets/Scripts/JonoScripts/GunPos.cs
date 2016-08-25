@@ -3,22 +3,17 @@ using System.Collections;
 
 public class GunPos : MonoBehaviour
 {
- public float m_DampTime = 0.2f;
-    public Transform m_target;
-    private Vector2 m_MoveVelocity;
-    private Vector2 m_DesiredPosition;
-    private void Awake()
+    void Update()
     {
-        m_target = GameObject.FindGameObjectWithTag("Player").transform;
-    }
-    private void FixedUpdate()
-    {
-        Move();
-    }
-    private void Move()
-    {
-        m_DesiredPosition = m_target.position;
-        transform.position = Vector2.SmoothDamp(transform.position,
-        m_DesiredPosition, ref m_MoveVelocity, m_DampTime);
+        //rotation
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = 5.23f;
+
+        Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
+        mousePos.x = mousePos.x - objectPos.x;
+        mousePos.y = mousePos.y - objectPos.y;
+
+        float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 }

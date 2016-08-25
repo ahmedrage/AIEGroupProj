@@ -16,6 +16,7 @@ public class PlayerMove : MonoBehaviour
     {
         m_Rigidbody.isKinematic = false; //allow the player to move
         m_MovementInputValue = 0f;
+        Physics2D.IgnoreLayerCollision(8, 9);
     }
 
     private void OnDisable()
