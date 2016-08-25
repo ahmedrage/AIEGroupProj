@@ -19,12 +19,15 @@ public class EnemyBehaviour : MonoBehaviour {
 	public float detectionTime;
 	public Image detectionImage;
 
+	Teleporters teleportersScript;
 	GameObject target;
 	float detectionVelocity;
-	public int direction = 1;
+	int direction = 1;
+	int level;
 	void Start () {
 		m_rigidbody2d = GetComponent<Rigidbody2D> ();
 		detectionImage = transform.FindChild("Canvas").transform.FindChild ("detectionBar").GetComponent<Image>();
+		teleportersScript = GameObject.FindGameObjectWithTag ("Gm").GetComponent<Teleporters> ();
 	}
 	
 	void Update () {
