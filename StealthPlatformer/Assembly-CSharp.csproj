@@ -45,7 +45,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\JonoScripts\BulletScript.cs" />
+     <Compile Include="Assets\Scripts\JonoScripts\GunPos.cs" />
      <Compile Include="Assets\Scripts\JonoScripts\PlayerMove.cs" />
+     <Compile Include="Assets\Scripts\JonoScripts\PlayerShoot.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

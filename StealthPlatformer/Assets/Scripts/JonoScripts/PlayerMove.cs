@@ -9,21 +9,18 @@ public class PlayerMove : MonoBehaviour
     public Rigidbody2D m_Rigidbody;
     private void Awake()
     {
-        m_Rigidbody = GetComponent<Rigidbody2D>();
+        m_Rigidbody = GetComponent<Rigidbody2D>(); //waken the rigidbody of the player
     }
 
     private void OnEnable()
     {
-        // when the tank is turned on, make sure it is not kinematic
-        m_Rigidbody.isKinematic = false;
-        // also reset the input values
+        m_Rigidbody.isKinematic = false; //allow the player to move
         m_MovementInputValue = 0f;
     }
 
     private void OnDisable()
     {
-        // when the tank is turned off, set it to kinematic so it stops moving
-        m_Rigidbody.isKinematic = true;
+        m_Rigidbody.isKinematic = true; //Disallow movement
     }
     private void FixedUpdate()
     {
@@ -32,10 +29,7 @@ public class PlayerMove : MonoBehaviour
 
     private void move()
     {
-        // create a vector in the direction the tank is facing with a magnitude of m_Speed
-        // based on the input, speed and time between frames
         Vector2 movement = new Vector2(Input.GetAxis("Horizontal") * m_Speed * Time.deltaTime, m_Rigidbody.velocity.y);
-        // Apply this movement to the rigidbody's position
         m_Rigidbody.velocity = movement;
     }
     // Use this for initialization
@@ -47,6 +41,6 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_Rigidbody = GetComponent<Rigidbody2D>();
+        m_Rigidbody = GetComponent<Rigidbody2D>(); //Fix for if the away function breaks
     }
 }
