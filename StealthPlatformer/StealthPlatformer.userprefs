@@ -2,8 +2,9 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AhmedScripts\EnemyBehaviour.cs">
     <Files>
-      <File FileName="Assets\Scripts\AhmedScripts\EnemyBehaviour.cs" Line="26" Column="12" />
-      <File FileName="Assets\Teleporters.cs" Line="3" Column="21" />
+      <File FileName="Assets\Scripts\AhmedScripts\EnemyBehaviour.cs" Line="41" Column="18" />
+      <File FileName="Assets\Scripts\AhmedScripts\Teleporters.cs" Line="5" Column="20" />
+      <File FileName="Assets\dummyPlayerScript.cs" Line="5" Column="19" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
