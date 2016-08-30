@@ -4,6 +4,7 @@ using System.Collections;
 
 public class PlayerMove : MonoBehaviour
 {
+    public int level = 0;
     public float m_Speed = 10; //Speed of the player
     private float m_MovementInputValue; //Value of movement input
     public Rigidbody2D m_Rigidbody;
@@ -22,7 +23,8 @@ public class PlayerMove : MonoBehaviour
     private void OnDisable()
     {
         m_Rigidbody.isKinematic = true; //Disallow movement
-    }
+    }
+
     private void FixedUpdate()
     {
         move();

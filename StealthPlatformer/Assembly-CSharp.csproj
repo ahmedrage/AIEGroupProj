@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\AhmedScripts\EnemyBehaviour.cs" />
      <Compile Include="Assets\Scripts\JonoScripts\BulletScript.cs" />
+     <Compile Include="Assets\Scripts\JonoScripts\EnemyDeath.cs" />
      <Compile Include="Assets\Scripts\JonoScripts\GunPos.cs" />
      <Compile Include="Assets\Scripts\JonoScripts\PlayerMove.cs" />
      <Compile Include="Assets\Scripts\JonoScripts\PlayerShoot.cs" />
