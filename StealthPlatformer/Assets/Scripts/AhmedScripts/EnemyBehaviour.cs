@@ -8,6 +8,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	{
 		Patrolling,
 		Alert,
+		Switching,
 		Persuing
 	};
 	public float m_Speed;
@@ -23,7 +24,8 @@ public class EnemyBehaviour : MonoBehaviour {
 	GameObject target;
 	float detectionVelocity;
 	int direction = 1;
-	int level;
+	public int level = 0;
+	int playerLevel;
 	void Start () {
 		m_rigidbody2d = GetComponent<Rigidbody2D> ();
 		detectionImage = transform.FindChild("Canvas").transform.FindChild ("detectionBar").GetComponent<Image>();
@@ -31,6 +33,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 	
 	void Update () {
+		playerLevel = GameObject.Find ("Player").GetComponent<dummyPlayerScript> ().level;
 		Detect ();
 		if (enemyState == state.Patrolling) {
 			Patrol ();
@@ -42,10 +45,10 @@ public class EnemyBehaviour : MonoBehaviour {
 			} else if (detectionLevel == 100) {
 				enemyState = state.Persuing;
 			}
-		}
-
-		if (enemyState == state.Persuing) {
+		} else if (enemyState == state.Persuing) {
 			Pursue ();
+		} else if (enemyState == state.Switching) {
+			SwitchLevel ();
 		}
 
 		m_rigidbody2d.velocity = Vector2.right * direction * m_Speed;
@@ -79,10 +82,52 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 
 	void Pursue () {
-		if (transform.position.x > target.transform.position.x) {
-			direction = -1;
+		if (playerLevel != level) {
+			enemyState = state.Switching;
 		} else {
-			direction = 1;
+			if (transform.position.x > target.transform.position.x) {
+				direction = -1;
+			} else {
+				direction = 1;
+			}
+		}
+	}
+
+	void SwitchLevel () {
+		float TeleporterDistance1 = Vector2.Distance(transform.position, teleportersScript.levelArray[playerLevel].teleporter1.position);
+		float TeleporterDistance2 = Vector2.Distance(transform.position, teleportersScript.levelArray[playerLevel].teleporter1.position);
+		Transform targetTeleporter;
+
+		if (playerLevel != level) {
+			if (TeleporterDistance1 < TeleporterDistance2) {
+				targetTeleporter = teleportersScript.levelArray [playerLevel].teleporter1;
+			} else {
+				targetTeleporter = teleportersScript.levelArray [playerLevel].teleporter2;
+			}
+
+			if (transform.position.x >= targetTeleporter.position.x) {
+				direction = -1;
+			} else if (transform.position.x <= targetTeleporter.position.x) { 
+				direction = 1;
+			}
+		}
+	}
+
+	void OnCollisionEnter2D (Collision2D coll) {
+		if (coll.gameObject.tag == "Teleporter" && enemyState == state.Switching) {
+			Teleport ();
+		}
+	}
+
+	void Teleport() {
+		if (playerLevel > level) {
+			transform.position = new Vector2 (transform.position.x, teleportersScript.levelArray [level+ 1].yPos);
+			level++;
+		} else if (playerLevel < level) {
+			transform.position = new Vector2 (transform.position.x, teleportersScript.levelArray [level- 1].yPos);
+			level--;
+		} else {
+			enemyState = state.Persuing;
 		}
 	}
 }

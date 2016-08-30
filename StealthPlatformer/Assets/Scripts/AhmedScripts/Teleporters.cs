@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 [System.Serializable]
-public class Teleport {
-	public Transform teleportOrigin;
-	public Transform upperTarget;
-	public Transform lowerTarget;
-	public int level;
-
+public class Level {
+	public float yPos;
+	public Transform teleporter1;
+	public Transform teleporter2;
 }
 
 public class Teleporters : MonoBehaviour {
-	public Teleport[] teleportArray;
+	public Level[] levelArray;
 	// Use this for initialization
 	void Start () {
 	
