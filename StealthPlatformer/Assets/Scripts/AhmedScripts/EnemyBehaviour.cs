@@ -33,7 +33,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 	
 	void Update () {
-		playerLevel = GameObject.Find ("Player").GetComponent<dummyPlayerScript> ().level;
+		playerLevel = GameObject.FindGameObjectWithTag ("Player").GetComponent<dummyPlayerScript> ().level;
 		Detect ();
 		if (enemyState == state.Patrolling) {
 			Patrol ();
@@ -63,7 +63,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 
 	void Detect () {
-		RaycastHit2D hit = Physics2D.CircleCast (transform.position, detectionRadius, Vector2.zero, Mathf.Infinity, detectionMask);
+		RaycastHit2D hit = Physics2D.CircleCast (transform.position, detectionRadius, Vector3.zero, 0, detectionMask);
 
 		if (hit.collider != null && hit.collider.tag == "Player") {
 			target = hit.collider.gameObject;
@@ -95,7 +95,7 @@ public class EnemyBehaviour : MonoBehaviour {
 
 	void SwitchLevel () {
 		float TeleporterDistance1 = Vector2.Distance(transform.position, teleportersScript.levelArray[playerLevel].teleporter1.position);
-		float TeleporterDistance2 = Vector2.Distance(transform.position, teleportersScript.levelArray[playerLevel].teleporter1.position);
+		float TeleporterDistance2 = Vector2.Distance(transform.position, teleportersScript.levelArray[playerLevel].teleporter2.position);
 		Transform targetTeleporter;
 
 		if (playerLevel != level) {
@@ -113,21 +113,19 @@ public class EnemyBehaviour : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter2D (Collision2D coll) {
-		if (coll.gameObject.tag == "Teleporter" && enemyState == state.Switching) {
-			Teleport ();
-		}
-	}
 
-	void Teleport() {
-		if (playerLevel > level) {
-			transform.position = new Vector2 (transform.position.x, teleportersScript.levelArray [level+ 1].yPos);
-			level++;
-		} else if (playerLevel < level) {
-			transform.position = new Vector2 (transform.position.x, teleportersScript.levelArray [level- 1].yPos);
-			level--;
-		} else {
-			enemyState = state.Persuing;
+
+	public void Teleport() {
+		if (enemyState == state.Switching) {
+			if (playerLevel > level) {
+				transform.position = new Vector2 (transform.position.x, teleportersScript.levelArray [level + 1].yPos);
+				level++;
+			} else if (playerLevel < level) {
+				transform.position = new Vector2 (transform.position.x, teleportersScript.levelArray [level - 1].yPos);
+				level--;
+			} else {
+				enemyState = state.Persuing;
+			}
 		}
 	}
 }
