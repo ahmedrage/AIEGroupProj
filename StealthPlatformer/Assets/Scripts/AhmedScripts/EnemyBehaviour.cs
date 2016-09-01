@@ -20,6 +20,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	public float detectionTime;
 	public Image detectionImage;
 
+	public bool playerDetected;
 	Teleporters teleportersScript;
 	GameObject target;
 	float detectionVelocity;
@@ -34,7 +35,12 @@ public class EnemyBehaviour : MonoBehaviour {
 	
 	void Update () {
 		playerLevel = GameObject.FindGameObjectWithTag ("Player").GetComponent<dummyPlayerScript> ().level;
-		Detect ();
+		if (playerDetected == false && detectionLevel > 0 && detectionLevel < 100) {
+			Detect (-1);
+		} else if (playerDetected == true && detectionLevel < 100) {
+			Detect (101);
+		}
+
 		if (enemyState == state.Patrolling) {
 			Patrol ();
 		} else if (enemyState == state.Alert) {
@@ -62,23 +68,27 @@ public class EnemyBehaviour : MonoBehaviour {
 		}
 	}
 
-	void Detect () {
-		RaycastHit2D hit = Physics2D.CircleCast (transform.position, detectionRadius, Vector3.zero, 0, detectionMask);
-
-		if (hit.collider != null && hit.collider.tag == "Player") {
-			target = hit.collider.gameObject;
-			detectionLevel = Mathf.SmoothDamp (detectionLevel, 101, ref detectionVelocity, detectionTime);
-
-			if (detectionLevel < 100) {
-				enemyState = state.Alert;
-			}
-		} else if ((hit.collider == null || hit.collider.tag != "Player") && detectionLevel > 0 && detectionLevel != 100) {
-			detectionLevel = Mathf.SmoothDamp (detectionLevel, -1, ref detectionVelocity, detectionTime);
-		}
-
+	void Detect (int target) {
+		detectionLevel = Mathf.SmoothDamp (detectionLevel, target, ref detectionVelocity, detectionTime);
 		detectionLevel = Mathf.Clamp (detectionLevel, 0, 100);
-
 		detectionImage.fillAmount = detectionLevel / 100;
+
+		if (detectionLevel < 100) {
+			enemyState = state.Alert;
+		}
+	}
+
+	void OnTriggerStay2D (Collider2D other) {
+		if (other != null && other.gameObject.tag == "Player") {
+			target = other.gameObject;
+			playerDetected = true;
+		}
+	}
+
+	void OnTriggerExit2D (Collider2D other) {
+		if (other != null && other.gameObject.tag == "Player") {
+			playerDetected = false;
+		}
 	}
 
 	void Pursue () {
