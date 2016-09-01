@@ -4,6 +4,7 @@ using System.Collections;
 
 public class PlayerMove : MonoBehaviour
 {
+    public Vector2 jumpHeight;
     public int level = 0;
     public float m_Speed = 10; //Speed of the player
     private float m_MovementInputValue; //Value of movement input
@@ -45,5 +46,11 @@ public class PlayerMove : MonoBehaviour
     void Update()
     {
         m_Rigidbody = GetComponent<Rigidbody2D>(); //Fix for if the away function breaks
+        
+    // Update is called once per frame
+        if (Input.GetKeyDown(KeyCode.Space) && m_Rigidbody.velocity.y == 0)  //makes player jump
+        {
+            GetComponent<Rigidbody2D>().AddForce(jumpHeight, ForceMode2D.Impulse);
+        }
     }
 }

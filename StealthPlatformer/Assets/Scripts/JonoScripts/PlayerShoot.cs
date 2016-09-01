@@ -6,6 +6,7 @@ public class PlayerShoot : MonoBehaviour
     public Rigidbody2D m_Bullet;
     public Transform m_FireTransform;
     public float m_Launchforce = 3f;
+    public float fireRate = 0f;
     // Use this for initialization
     void Start()
     {
@@ -15,9 +16,14 @@ public class PlayerShoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        fireRate -= 0.1f;
         if (Input.GetButtonUp("Fire1"))
         {
-            Fire();
+            if (fireRate <= 0)
+            {
+                Fire();
+                fireRate = 1;
+            }
         }
     }
     private void Fire()
