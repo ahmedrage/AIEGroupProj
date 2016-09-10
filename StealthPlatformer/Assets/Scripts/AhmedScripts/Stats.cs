@@ -7,8 +7,9 @@ public class Level {
 	public Transform teleporter2;
 }
 
-public class Teleporters : MonoBehaviour {
+public class Stats : MonoBehaviour {
 	public Level[] levelArray;
+	public bool detected;
 	// Use this for initialization
 	void Start () {
 	

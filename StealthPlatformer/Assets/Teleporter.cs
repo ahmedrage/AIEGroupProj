@@ -20,7 +20,7 @@ public class Teleporter : MonoBehaviour {
 		}
 		if (other.tag == "Player") {
 			int playerLevel = other.gameObject.GetComponent<dummyPlayerScript> ().level;
-			Teleporters teleportersScript = GameObject.FindGameObjectWithTag ("Gm").GetComponent<Teleporters> ();
+			Stats teleportersScript = GameObject.FindGameObjectWithTag ("Gm").GetComponent<Stats> ();
 			if (Input.GetKeyDown(KeyCode.W) && playerLevel < teleportersScript.levelArray.Length - 1) {
 				other.gameObject.transform.position = new Vector2 (other.gameObject.transform.position.x, teleportersScript.levelArray [playerLevel + 1].yPos);
 				other.gameObject.GetComponent<dummyPlayerScript> ().level++;
