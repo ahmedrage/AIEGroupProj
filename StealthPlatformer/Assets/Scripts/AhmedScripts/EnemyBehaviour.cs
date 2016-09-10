@@ -27,6 +27,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	public float randomX;
 	public float randomY;
 
+	Transform enemyCanvas;
 	float timeToShoot;
 	bool playerDetected;
 	Stats teleportersScript;
@@ -36,6 +37,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	public int level = 0;
 	int playerLevel;
 	void Start () {
+		enemyCanvas = transform.FindChild ("Canvas");
 		target = GameObject.FindGameObjectWithTag ("Player");
 		m_rigidbody2d = GetComponent<Rigidbody2D> ();
 		detectionImage = transform.FindChild("Canvas").transform.FindChild ("detectionBar").GetComponent<Image>();
@@ -45,9 +47,9 @@ public class EnemyBehaviour : MonoBehaviour {
 	
 	void Update () {
 		if (direction != 0 && direction == -1 && transform.localScale.x > 0) {
-			transform.localScale = new Vector2 (-transform.localScale.x, transform.localScale.y);;
+			transform.localScale = new Vector3 (-transform.localScale.x, transform.localScale.y, 1);
 		} else if (direction == 1) {
-			transform.localScale = new Vector3(Mathf.Sqrt(transform.localScale.x * transform.localScale.x),transform.localScale.y);
+			transform.localScale = new Vector3 (Mathf.Abs(transform.localScale.x),transform.localScale.y, 1);
 		}
 
 		playerLevel = GameObject.FindGameObjectWithTag ("Player").GetComponent<dummyPlayerScript> ().level;
