@@ -6,29 +6,29 @@ public class EnemyBehaviour : MonoBehaviour {
 	public Rigidbody2D m_rigidbody2d; //Enemy rigidbody
 	public enum state // Defining the enemy states
 	{
-		Patrolling,
-		Alert,
-		Switching,
-		Persuing
+		Patrolling, // The patrolling state
+		Alert,      // The state in which the enemy is being alerted
+		Switching,  // The state in which the enemy is changing level
+		Persuing    // The state in which the enemy is chasing the player
 	};
-	public float m_Speed;
-	public Transform[] patrolPoints;
+	public float m_Speed; // The movement speed
+	public Transform[] patrolPoints; // The two points the enemy patrols between
 	public state enemyState; // The current state of the enemy
-	public LayerMask detectionMask;
-	public float detectionRadius;
-	public float detectionLevel;
-	public float detectionTime;
-	public Image detectionImage;
-	public bool canShoot;
-	public float fireRate;
-	public float maxDist;
-	public GameObject bullet;
-	public Transform firePoint;
-	public float randomX;
+	public float detectionLevel; // The % value of how close the enemy is to fully detecting the player
+	public float detectionTime; // The ammount of seconds in detection radius for the enemy to start persuing player
+	public Image detectionImage; // The detection bar
+	public bool canShoot; // If the enemy should be able to shoot
+	public float fireDelay; // The delay between shots
+	public float maxDist; // The maxiumum distance possible for the enemy to shoot
+	public GameObject bullet; // The bullet
+	public Transform firePoint; //THe point where the bullet is instantiated
+	public float randomX; //
 	public float randomY;
+	public float shootFreezeTime;
 
+	float initialSpeed;
 	Transform enemyCanvas;
-	float timeToShoot;
+	public float timeToShoot;
 	bool playerDetected;
 	Stats teleportersScript;
 	GameObject target;
@@ -36,7 +36,9 @@ public class EnemyBehaviour : MonoBehaviour {
 	public int direction = 1;
 	public int level = 0;
 	int playerLevel;
+
 	void Start () {
+		initialSpeed = m_Speed;
 		enemyCanvas = transform.FindChild ("Canvas");
 		target = GameObject.FindGameObjectWithTag ("Player");
 		m_rigidbody2d = GetComponent<Rigidbody2D> ();
@@ -132,13 +134,16 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 
 	void Shoot () {
-		GameObject shot = Instantiate (bullet, firePoint.position, transform.rotation) as GameObject;
-		shot.transform.LookAt (new Vector2 (target.transform.position.x + Random.Range(-randomX, randomX), Random.Range(-randomY, randomY)));
+
 		if (Time.time > timeToShoot && Vector2.Distance(transform.position, target.transform.position) < maxDist) {
-			timeToShoot += Time.time + 10 / fireRate;
+			timeToShoot = Time.time + fireDelay;
+			StartCoroutine (waitAndMove (shootFreezeTime));
 			print ("Test");
-			//GameObject shot = Instantiate (bullet, firePoint.position, transform.rotation) as GameObject;
-			//shot.transform.LookAt (new Vector2 (target.transform.position.x + Random.Range(-randomX, randomX), Random.Range(-randomY, randomY)));
+			GameObject shot = Instantiate (bullet, firePoint.position, transform.rotation) as GameObject;
+			Vector3 targetPos = new Vector3 (target.transform.position.x, target.transform.position.y + Random.Range (-randomY, randomY), 0);
+			Vector2 dir = targetPos - shot.transform.position;
+			float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
+			shot.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
 		}
 	}
 
@@ -177,4 +182,11 @@ public class EnemyBehaviour : MonoBehaviour {
 			}
 		}
 	}
+
+	IEnumerator waitAndMove (float waitTime) {
+		m_Speed = 0;
+		yield return new WaitForSeconds (waitTime);
+		m_Speed = initialSpeed;
+	}
+
 }
