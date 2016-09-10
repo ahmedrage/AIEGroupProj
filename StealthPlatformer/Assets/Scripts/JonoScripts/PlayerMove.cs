@@ -48,9 +48,16 @@ public class PlayerMove : MonoBehaviour
         m_Rigidbody = GetComponent<Rigidbody2D>(); //Fix for if the away function breaks
         
     // Update is called once per frame
-        if (Input.GetKeyDown(KeyCode.Space) && m_Rigidbody.velocity.y == 0)  //makes player jump
+        if (Input.GetKeyDown(KeyCode.UpArrow) && Mathf.Abs(m_Rigidbody.velocity.y) < 0.1)  //makes player jump
         {
             GetComponent<Rigidbody2D>().AddForce(jumpHeight, ForceMode2D.Impulse);
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            Destroy(gameObject);
         }
     }
 }

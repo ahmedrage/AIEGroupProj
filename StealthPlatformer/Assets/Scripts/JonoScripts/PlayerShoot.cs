@@ -7,6 +7,7 @@ public class PlayerShoot : MonoBehaviour
     public Transform m_FireTransform;
     public float m_Launchforce = 3f;
     public float fireRate = 0f;
+    public float Ammo = 3;
     // Use this for initialization
     void Start()
     {
@@ -19,10 +20,11 @@ public class PlayerShoot : MonoBehaviour
         fireRate -= 0.1f;
         if (Input.GetButtonUp("Fire1"))
         {
-            if (fireRate <= 0)
+            if (fireRate <= 0 && Ammo > 0)
             {
                 Fire();
                 fireRate = 1;
+                Ammo -= 1;
             }
         }
     }
