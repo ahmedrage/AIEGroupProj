@@ -17,7 +17,10 @@ public class EnemyBehaviour : MonoBehaviour {
 	public float detectionLevel; // The % value of how close the enemy is to fully detecting the player
 	public float detectionTime; // The ammount of seconds in detection radius for the enemy to start persuing player
 	public Image detectionImage; // The detection bar
-	public bool canShoot; // If the enemy should be able to shoot
+	public bool shootingEnabled; // If the enemy can ever shoot
+	public bool lungingEnabled; //If the enemy can ever lunge
+	public float lungeDistance;
+	public float lungeMultiplier;
 	public float fireDelay; // The delay between shots
 	public float maxDist; // The maxiumum distance possible for the enemy to shoot
 	public GameObject bullet; // The bullet
@@ -26,6 +29,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	public float randomY;
 	public float shootFreezeTime;
 
+	bool canShoot = true; // If the enemy can currently shoot
 	float initialSpeed;
 	Transform enemyCanvas;
 	public float timeToShoot;
@@ -36,6 +40,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	public int direction = 1;
 	public int level = 0;
 	int playerLevel;
+	float distanceFromPlayer;
 
 	void Start () {
 		initialSpeed = m_Speed;
@@ -48,40 +53,46 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 
 	void Update () {
-		if (direction != 0 && direction == -1 && transform.localScale.x > 0) {
-			transform.localScale = new Vector3 (-transform.localScale.x, transform.localScale.y, 1);
-		} else if (direction == 1) {
-			transform.localScale = new Vector3 (Mathf.Abs(transform.localScale.x),transform.localScale.y, 1);
-		}
+		if (target != null) {
+			distanceFromPlayer = Vector2.Distance (transform.position, target.transform.position);
 
-		playerLevel = GameObject.FindGameObjectWithTag ("Player").GetComponent<dummyPlayerScript> ().level;
-		if (playerDetected == false && detectionLevel > 0 && detectionLevel < 100 && teleportersScript.detected == false) {
-			Detect (-1);
-		} else if (playerDetected == true && detectionLevel < 100 && teleportersScript.detected == false) {
-			Detect (101);
-		} 
-		if (teleportersScript.detected == true) {
-			Detect (101);
-		}
-
-		if (enemyState == state.Patrolling) {
-			Patrol ();
-		} else if (enemyState == state.Alert) {
-			direction = 0;
-			if (detectionLevel == 0) {
-				enemyState = state.Patrolling;
-				direction = 1;
-			} else if (detectionLevel == 100) {
-				enemyState = state.Persuing;
-				teleportersScript.detected = true;
+			if (direction != 0 && direction == -1 && transform.localScale.x > 0) {
+				transform.localScale = new Vector3 (-transform.localScale.x, transform.localScale.y, 1);
+			} else if (direction == 1) {
+				transform.localScale = new Vector3 (Mathf.Abs (transform.localScale.x), transform.localScale.y, 1);
 			}
-		} else if (enemyState == state.Persuing) {
-			Pursue ();
-		} else if (enemyState == state.Switching) {
-			SwitchLevel ();
-		}
 
-		m_rigidbody2d.velocity = Vector2.right * direction * m_Speed;
+			playerLevel = GameObject.FindGameObjectWithTag ("Player").GetComponent<dummyPlayerScript> ().level;
+			if (playerDetected == false && detectionLevel > 0 && detectionLevel < 100 && teleportersScript.detected == false) {
+				Detect (-1);
+			} else if (playerDetected == true && detectionLevel < 100 && teleportersScript.detected == false) {
+				Detect (101);
+			} 
+			if (teleportersScript.detected == true) {
+				Detect (101);
+			}
+
+			if (enemyState == state.Patrolling) {
+				Patrol ();
+			} else if (enemyState == state.Alert) {
+				direction = 0;
+				if (detectionLevel == 0) {
+					enemyState = state.Patrolling;
+					direction = 1;
+				} else if (detectionLevel == 100) {
+					enemyState = state.Persuing;
+					teleportersScript.detected = true;
+				}
+			} else if (enemyState == state.Persuing) {
+				Pursue ();
+			} else if (enemyState == state.Switching) {
+				SwitchLevel ();
+			}
+
+			m_rigidbody2d.velocity = Vector2.right * direction * m_Speed;
+		} else {
+			print ("Player not found");
+		}
 	}
 
 	void Patrol () {
@@ -128,8 +139,13 @@ public class EnemyBehaviour : MonoBehaviour {
 			}
 		}
 
-		if (canShoot == true && level == playerLevel) {
+		if (shootingEnabled == true && canShoot == true && level == playerLevel) {
 			Shoot ();
+		} else if (lungingEnabled == true && distanceFromPlayer < lungeDistance && m_Speed > 0) {
+			m_Speed = initialSpeed * lungeMultiplier;
+		}
+		if (distanceFromPlayer > lungeDistance && m_Speed > 0) {
+			m_Speed = initialSpeed;
 		}
 	}
 
