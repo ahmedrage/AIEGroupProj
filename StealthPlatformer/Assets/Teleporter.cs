@@ -15,7 +15,7 @@ public class Teleporter : MonoBehaviour {
 
 
 	void OnTriggerStay2D (Collider2D other) {
-		if (other.tag == "Enemy") {
+		if (other.tag == "Enemy" && other.gameObject.GetComponent<EnemyBehaviour>() != null) {
 			other.gameObject.GetComponent<EnemyBehaviour> ().Teleport ();
 		}
 		if (other.tag == "Player") {
