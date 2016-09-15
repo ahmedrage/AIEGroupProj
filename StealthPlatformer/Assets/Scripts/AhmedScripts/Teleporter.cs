@@ -22,10 +22,27 @@ public class Teleporter : MonoBehaviour {
 			int playerLevel = other.gameObject.GetComponent<dummyPlayerScript> ().level;
 			Stats teleportersScript = GameObject.FindGameObjectWithTag ("Gm").GetComponent<Stats> ();
 			if (Input.GetKeyDown(KeyCode.W) && playerLevel < teleportersScript.levelArray.Length - 1) {
-				other.gameObject.transform.position = new Vector2 (teleportersScript.levelArray[playerLevel + 1].teleporter1.transform.position.x, teleportersScript.levelArray [playerLevel + 1].teleporter1.transform.position.y);
+				float xPos;
+				float tp1XPos = teleportersScript.levelArray [playerLevel + 1].teleporter1.transform.position.x;
+				float tp2XPos = teleportersScript.levelArray [playerLevel + 1].teleporter2.transform.position.x;
+				if (Mathf.Abs(transform.position.x - tp1XPos) > Mathf.Abs(transform.position.x - tp2XPos)) {
+					xPos = tp2XPos;
+				} else {
+					xPos = tp1XPos;
+				}
+				other.gameObject.transform.position = new Vector2 (xPos, teleportersScript.levelArray [playerLevel + 1].teleporter1.transform.position.y);
 				other.gameObject.GetComponent<dummyPlayerScript> ().level++;
 			} else if (Input.GetKeyDown(KeyCode.S) && playerLevel > 0) {
-				other.gameObject.transform.position = new Vector2 (teleportersScript.levelArray[playerLevel - 1].teleporter1.transform.position.x, teleportersScript.levelArray [playerLevel - 1].teleporter1.transform.position.y);
+				float xPos;
+				float tp1XPos = teleportersScript.levelArray [playerLevel - 1].teleporter1.transform.position.x;
+				float tp2XPos = teleportersScript.levelArray [playerLevel - 1].teleporter2.transform.position.x;
+				if (Mathf.Abs(transform.position.x - tp1XPos) > Mathf.Abs(transform.position.x - tp2XPos)) {
+					xPos = tp2XPos;
+				} else {
+					xPos = tp1XPos;
+				}
+
+				other.gameObject.transform.position = new Vector2 (xPos, teleportersScript.levelArray [playerLevel - 1].teleporter1.transform.position.y);
 				other.gameObject.GetComponent<dummyPlayerScript> ().level--;
 			}
 		}
