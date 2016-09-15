@@ -43,6 +43,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	float distanceFromPlayer;
 
 	void Start () {
+		Physics2D.IgnoreLayerCollision (10, 11);
 		initialSpeed = m_Speed;
 		enemyCanvas = transform.FindChild ("Canvas");
 		target = GameObject.FindGameObjectWithTag ("Player");
@@ -116,7 +117,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 
 	void OnTriggerStay2D (Collider2D other) {
-		if (other != null && other.gameObject.tag == "Player") {
+		if (other != null && other.gameObject.tag == "Player" && other.gameObject.layer == 9) {
 			target = other.gameObject;
 			playerDetected = true;
 		}
