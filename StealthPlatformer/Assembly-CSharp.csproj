@@ -58,7 +58,9 @@
      <Compile Include="Assets\Scripts\JonoScripts\PlayerMove.cs" />
      <Compile Include="Assets\Scripts\JonoScripts\PlayerShoot.cs" />
      <Compile Include="Assets\Scripts\cameraFollow.cs" />
+     <Compile Include="Assets\mainMenuButtons.cs" />
      <Compile Include="Assets\navSystem.cs" />
+     <Compile Include="Assets\pauseMenu.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

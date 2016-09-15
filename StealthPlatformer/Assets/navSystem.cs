@@ -18,15 +18,17 @@ public class navSystem : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.LeftShift)) {
-			DrawLine (player.transform.position, target.transform.position);
-		}
-		if (followPlayer == true) { 
-			m_lineRenderer.SetPosition (0, player.position);
-		}
-		if (lineDrawn == true && Time.time > timeToHide) {
-			lineDrawn = false;
-			m_lineRenderer.enabled = false;
+		if (player) {
+			if (Input.GetKeyDown (KeyCode.LeftShift)) {
+				DrawLine (player.transform.position, target.transform.position);
+			}
+			if (followPlayer == true) { 
+				m_lineRenderer.SetPosition (0, player.position);
+			}
+			if (lineDrawn == true && Time.time > timeToHide) {
+				lineDrawn = false;
+				m_lineRenderer.enabled = false;
+			}
 		}
 	}
 

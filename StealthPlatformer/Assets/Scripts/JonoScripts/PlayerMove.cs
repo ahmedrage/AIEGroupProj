@@ -57,7 +57,8 @@ public class PlayerMove : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            Destroy(gameObject);
+			GameObject.FindGameObjectWithTag ("Gm").GetComponent<Stats> ().isDead = true;
+			Destroy(gameObject);
         }
     }
 }

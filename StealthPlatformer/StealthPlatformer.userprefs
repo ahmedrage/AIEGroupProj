@@ -1,16 +1,19 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\navSystem.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AhmedScripts\Stats.cs">
     <Files>
-      <File FileName="Assets\Scripts\AhmedScripts\EnemyBehaviour.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AhmedScripts\Stats.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\AhmedScripts\EnemyBehaviour.cs" Line="175" Column="12" />
+      <File FileName="Assets\mainMenuButtons.cs" Line="5" Column="47" />
+      <File FileName="Assets\Scripts\AhmedScripts\Stats.cs" Line="28" Column="31" />
       <File FileName="Assets\Scripts\AhmedScripts\Teleporters.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\JonoScripts\BulletScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\AhmedScripts\enemyBullet.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\JonoScripts\PlayerShoot.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\JonoScripts\PlayerMove.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\JonoScripts\PlayerMove.cs" Line="60" Column="81" />
       <File FileName="Assets\Scripts\AhmedScripts\hidingSpot.cs" Line="1" Column="1" />
-      <File FileName="Assets\navSystem.cs" Line="26" Column="53" />
+      <File FileName="Assets\navSystem.cs" Line="32" Column="4" />
+      <File FileName="Assets\Scripts\AhmedScripts\Teleporter.cs" Line="1" Column="1" />
+      <File FileName="Assets\pauseMenu.cs" Line="10" Column="22" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
