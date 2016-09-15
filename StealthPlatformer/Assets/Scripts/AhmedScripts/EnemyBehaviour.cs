@@ -6,29 +6,33 @@ public class EnemyBehaviour : MonoBehaviour {
 	public Rigidbody2D m_rigidbody2d; //Enemy rigidbody
 	public enum state // Defining the enemy states
 	{
-		Patrolling,
-		Alert,
-		Switching,
-		Persuing
+		Patrolling, // The patrolling state
+		Alert,      // The state in which the enemy is being alerted
+		Switching,  // The state in which the enemy is changing level
+		Persuing    // The state in which the enemy is chasing the player
 	};
-	public float m_Speed;
-	public Transform[] patrolPoints;
+	public float m_Speed; // The movement speed
+	public Transform[] patrolPoints; // The two points the enemy patrols between
 	public state enemyState; // The current state of the enemy
-	public LayerMask detectionMask;
-	public float detectionRadius;
-	public float detectionLevel;
-	public float detectionTime;
-	public Image detectionImage;
-	public bool canShoot;
-	public float fireRate;
-	public float maxDist;
-	public GameObject bullet;
-	public Transform firePoint;
-	public float randomX;
+	public float detectionLevel; // The % value of how close the enemy is to fully detecting the player
+	public float detectionTime; // The ammount of seconds in detection radius for the enemy to start persuing player
+	public Image detectionImage; // The detection bar
+	public bool shootingEnabled; // If the enemy can ever shoot
+	public bool lungingEnabled; //If the enemy can ever lunge
+	public float lungeDistance;
+	public float lungeMultiplier;
+	public float fireDelay; // The delay between shots
+	public float maxDist; // The maxiumum distance possible for the enemy to shoot
+	public GameObject bullet; // The bullet
+	public Transform firePoint; //THe point where the bullet is instantiated
+	public float randomX; //
 	public float randomY;
+	public float shootFreezeTime;
 
+	bool canShoot = true; // If the enemy can currently shoot
+	float initialSpeed;
 	Transform enemyCanvas;
-	float timeToShoot;
+	public float timeToShoot;
 	bool playerDetected;
 	Stats teleportersScript;
 	GameObject target;
@@ -36,7 +40,11 @@ public class EnemyBehaviour : MonoBehaviour {
 	public int direction = 1;
 	public int level = 0;
 	int playerLevel;
+	float distanceFromPlayer;
+
 	void Start () {
+		Physics2D.IgnoreLayerCollision (10, 11);
+		initialSpeed = m_Speed;
 		enemyCanvas = transform.FindChild ("Canvas");
 		target = GameObject.FindGameObjectWithTag ("Player");
 		m_rigidbody2d = GetComponent<Rigidbody2D> ();
@@ -46,40 +54,46 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 
 	void Update () {
-		if (direction != 0 && direction == -1 && transform.localScale.x > 0) {
-			transform.localScale = new Vector3 (-transform.localScale.x, transform.localScale.y, 1);
-		} else if (direction == 1) {
-			transform.localScale = new Vector3 (Mathf.Abs(transform.localScale.x),transform.localScale.y, 1);
-		}
+		if (target != null) {
+			distanceFromPlayer = Vector2.Distance (transform.position, target.transform.position);
 
-		playerLevel = GameObject.FindGameObjectWithTag ("Player").GetComponent<dummyPlayerScript> ().level;
-		if (playerDetected == false && detectionLevel > 0 && detectionLevel < 100 && teleportersScript.detected == false) {
-			Detect (-1);
-		} else if (playerDetected == true && detectionLevel < 100 && teleportersScript.detected == false) {
-			Detect (101);
-		} 
-		if (teleportersScript.detected == true) {
-			Detect (101);
-		}
-
-		if (enemyState == state.Patrolling) {
-			Patrol ();
-		} else if (enemyState == state.Alert) {
-			direction = 0;
-			if (detectionLevel == 0) {
-				enemyState = state.Patrolling;
-				direction = 1;
-			} else if (detectionLevel == 100) {
-				enemyState = state.Persuing;
-				teleportersScript.detected = true;
+			if (direction != 0 && direction == -1 && transform.localScale.x > 0) {
+				transform.localScale = new Vector3 (-transform.localScale.x, transform.localScale.y, 1);
+			} else if (direction == 1) {
+				transform.localScale = new Vector3 (Mathf.Abs (transform.localScale.x), transform.localScale.y, 1);
 			}
-		} else if (enemyState == state.Persuing) {
-			Pursue ();
-		} else if (enemyState == state.Switching) {
-			SwitchLevel ();
-		}
 
-		m_rigidbody2d.velocity = Vector2.right * direction * m_Speed;
+			playerLevel = GameObject.FindGameObjectWithTag ("Player").GetComponent<dummyPlayerScript> ().level;
+			if (playerDetected == false && detectionLevel > 0 && detectionLevel < 100 && teleportersScript.detected == false) {
+				Detect (-1);
+			} else if (playerDetected == true && detectionLevel < 100 && teleportersScript.detected == false) {
+				Detect (101);
+			} 
+			if (teleportersScript.detected == true) {
+				Detect (101);
+			}
+
+			if (enemyState == state.Patrolling) {
+				Patrol ();
+			} else if (enemyState == state.Alert) {
+				direction = 0;
+				if (detectionLevel == 0) {
+					enemyState = state.Patrolling;
+					direction = 1;
+				} else if (detectionLevel == 100) {
+					enemyState = state.Persuing;
+					teleportersScript.detected = true;
+				}
+			} else if (enemyState == state.Persuing) {
+				Pursue ();
+			} else if (enemyState == state.Switching) {
+				SwitchLevel ();
+			}
+
+			m_rigidbody2d.velocity = Vector2.right * direction * m_Speed;
+		} else {
+			print ("Player not found");
+		}
 	}
 
 	void Patrol () {
@@ -103,7 +117,7 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 
 	void OnTriggerStay2D (Collider2D other) {
-		if (other != null && other.gameObject.tag == "Player") {
+		if (other != null && other.gameObject.tag == "Player" && other.gameObject.layer == 9) {
 			target = other.gameObject;
 			playerDetected = true;
 		}
@@ -126,19 +140,27 @@ public class EnemyBehaviour : MonoBehaviour {
 			}
 		}
 
-		if (canShoot == true && level == playerLevel) {
+		if (shootingEnabled == true && canShoot == true && level == playerLevel) {
 			Shoot ();
+		} else if (lungingEnabled == true && distanceFromPlayer < lungeDistance && m_Speed > 0) {
+			m_Speed = initialSpeed * lungeMultiplier;
+		}
+		if (distanceFromPlayer > lungeDistance && m_Speed > 0) {
+			m_Speed = initialSpeed;
 		}
 	}
 
 	void Shoot () {
-		GameObject shot = Instantiate (bullet, firePoint.position, transform.rotation) as GameObject;
-		shot.transform.LookAt (new Vector2 (target.transform.position.x + Random.Range(-randomX, randomX), Random.Range(-randomY, randomY)));
+
 		if (Time.time > timeToShoot && Vector2.Distance(transform.position, target.transform.position) < maxDist) {
-			timeToShoot += Time.time + 10 / fireRate;
+			timeToShoot = Time.time + fireDelay;
+			StartCoroutine (waitAndMove (shootFreezeTime));
 			print ("Test");
-			//GameObject shot = Instantiate (bullet, firePoint.position, transform.rotation) as GameObject;
-			//shot.transform.LookAt (new Vector2 (target.transform.position.x + Random.Range(-randomX, randomX), Random.Range(-randomY, randomY)));
+			GameObject shot = Instantiate (bullet, firePoint.position, transform.rotation) as GameObject;
+			Vector3 targetPos = new Vector3 (target.transform.position.x, target.transform.position.y + Random.Range (-randomY, randomY), 0);
+			Vector2 dir = targetPos - shot.transform.position;
+			float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
+			shot.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
 		}
 	}
 
@@ -177,4 +199,11 @@ public class EnemyBehaviour : MonoBehaviour {
 			}
 		}
 	}
+
+	IEnumerator waitAndMove (float waitTime) {
+		m_Speed = 0;
+		yield return new WaitForSeconds (waitTime);
+		m_Speed = initialSpeed;
+	}
+
 }
