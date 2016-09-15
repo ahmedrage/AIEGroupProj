@@ -167,10 +167,10 @@ public class EnemyBehaviour : MonoBehaviour {
 	public void Teleport() {
 		if (enemyState == state.Switching) {
 			if (playerLevel > level) {
-				transform.position = new Vector2 (transform.position.x, teleportersScript.levelArray [level + 1].yPos);
+				transform.position = new Vector2 (transform.position.x, teleportersScript.levelArray [level + 1].teleporter1.transform.position.y);
 				level++;
 			} else if (playerLevel < level) {
-				transform.position = new Vector2 (transform.position.x, teleportersScript.levelArray [level - 1].yPos);
+				transform.position = new Vector2 (transform.position.x, teleportersScript.levelArray [level - 1].teleporter1.transform.position.y);
 				level--;
 			} else {
 				enemyState = state.Persuing;
