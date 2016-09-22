@@ -15,6 +15,7 @@ public class Stats : MonoBehaviour {
 	public Transform player;
 	public int playerLevel;
 	GameObject deathScreen;
+	public AudioSource deathSound;
 	// Use this for initialization
 	void Start () {
 		if (deathScreen == null) {
@@ -35,21 +36,23 @@ public class Stats : MonoBehaviour {
 			}
 		}
 
-		float yPos = player.position.y;
-		int i = 0;
-		foreach (var Level in levelArray) {
-			if (i == 0) {
-				if (Mathf.Round(yPos) == Mathf.Round(levelArray [i].teleporter1.position.y) || yPos < levelArray [i + 1].teleporter1.position.y) {
-					playerLevel = i;
-					return;
+		if (player != null) {
+			float yPos = player.position.y;
+			int i = 0;
+			foreach (var Level in levelArray) {
+				if (i == 0) {
+					if (Mathf.Round (yPos) == Mathf.Round (levelArray [i].teleporter1.position.y) || yPos < levelArray [i + 1].teleporter1.position.y) {
+						playerLevel = i;
+						return;
+					}
+				} else {
+					if (Mathf.Round (yPos) == Mathf.Round (levelArray [i].teleporter1.position.y) || (yPos < levelArray [i + 1].teleporter1.position.y && yPos > levelArray [i - 1].teleporter1.position.y)) {
+						playerLevel = i;
+						return;
+					}
 				}
-			} else {
-				if (Mathf.Round(yPos) == Mathf.Round(levelArray [i].teleporter1.position.y) || (yPos < levelArray [i + 1].teleporter1.position.y && yPos > levelArray [i - 1].teleporter1.position.y)) {
-					playerLevel = i;
-					return;
-				}
-			}
-			i++;
-		}		
+				i++;
+			}	
+		}
 	}
 }

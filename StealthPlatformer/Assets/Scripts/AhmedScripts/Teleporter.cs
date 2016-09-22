@@ -8,6 +8,7 @@ public class Teleporter : MonoBehaviour {
 	public Stats teleportersScript;
 	public float teleportDelay;
 	float timeToTeleport;
+	public AudioSource teleportSound;
 	// Use this for initialization
 	void Start () {
 		player = GameObject.FindGameObjectWithTag ("Player");
@@ -18,7 +19,9 @@ public class Teleporter : MonoBehaviour {
 	void Update () {
 		timeToTeleport = teleportersScript.timeToTeleport;
 		playerLevel = teleportersScript.playerLevel;
-
+		if (player == null) {
+			return;
+		}
 		if (Vector2.Distance (player.transform.position, transform.position) < maxTeleporterRange & Time.time > timeToTeleport) {
 				
 			if (Input.GetKeyDown (KeyCode.W) && playerLevel < teleportersScript.levelArray.Length - 1) {
@@ -33,6 +36,7 @@ public class Teleporter : MonoBehaviour {
 				player.transform.position = new Vector2 (xPos, teleportersScript.levelArray [playerLevel + 1].teleporter1.transform.position.y);
 				timeToTeleport = Time.time + teleportDelay;
 				teleportersScript.timeToTeleport = timeToTeleport;
+				teleportSound.Play ();
 			} else if (Input.GetKeyDown (KeyCode.S) && playerLevel > 0) {
 				float xPos;
 				float tp1XPos = teleportersScript.levelArray [playerLevel - 1].teleporter1.transform.position.x;
@@ -46,6 +50,8 @@ public class Teleporter : MonoBehaviour {
 				player.transform.position = new Vector2 (xPos, teleportersScript.levelArray [playerLevel - 1].teleporter1.transform.position.y);
 				timeToTeleport = Time.time + teleportDelay;
 				teleportersScript.timeToTeleport = timeToTeleport;
+				teleportSound.Play ();
+			
 			}
 		}
 	}

@@ -18,8 +18,10 @@ public class cameraFollow : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		Vector3 target = new Vector3 (playerTransform.position.x + xOffset, playerTransform.position.y + yOffset, transform.position.z); 
-		transform.position = Vector3.SmoothDamp (transform.position, target, ref currentVelocity, smoothTime);
+		if (playerTransform != null) {
+			Vector3 target = new Vector3 (playerTransform.position.x + xOffset, playerTransform.position.y + yOffset, transform.position.z); 
+			transform.position = Vector3.SmoothDamp (transform.position, target, ref currentVelocity, smoothTime);
+		}
 	}
 
 	void Update () {
