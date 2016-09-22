@@ -11,7 +11,9 @@ public class Stats : MonoBehaviour {
 	public Level[] levelArray;
 	public bool detected;
 	public bool isDead;
-
+	public float timeToTeleport;
+	public Transform player;
+	public int playerLevel;
 	GameObject deathScreen;
 	// Use this for initialization
 	void Start () {
@@ -19,6 +21,9 @@ public class Stats : MonoBehaviour {
 			deathScreen = GameObject.FindGameObjectWithTag ("deathScreen");
 		}
 		deathScreen.SetActive (false);
+
+		player = GameObject.FindGameObjectWithTag ("Player").transform;
+
 	}
 	
 	// Update is called once per frame
@@ -29,5 +34,22 @@ public class Stats : MonoBehaviour {
 				SceneManager.LoadScene (0);
 			}
 		}
+
+		float yPos = player.position.y;
+		int i = 0;
+		foreach (var Level in levelArray) {
+			if (i == 0) {
+				if (Mathf.Round(yPos) == Mathf.Round(levelArray [i].teleporter1.position.y) || yPos < levelArray [i + 1].teleporter1.position.y) {
+					playerLevel = i;
+					return;
+				}
+			} else {
+				if (Mathf.Round(yPos) == Mathf.Round(levelArray [i].teleporter1.position.y) || (yPos < levelArray [i + 1].teleporter1.position.y && yPos > levelArray [i - 1].teleporter1.position.y)) {
+					playerLevel = i;
+					return;
+				}
+			}
+			i++;
+		}		
 	}
 }
