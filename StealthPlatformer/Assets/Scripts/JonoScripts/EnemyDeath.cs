@@ -7,9 +7,17 @@ public class EnemyDeath : MonoBehaviour {
 	void Start () {
 	
 	}
-	
-	// Update is called once per frame
-	void Update () {
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+       if  (other.gameObject.tag == "Bullet") 
+        {
+            Rigidbody2D targetRigidbody2D = other.gameObject.GetComponent<Rigidbody2D>();
+            // Add Damage Code Here
+            Destroy(gameObject);
+        }
+    }
+    // Update is called once per frame
+    void Update () {
 	
 	}
 }
