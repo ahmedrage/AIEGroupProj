@@ -71,14 +71,20 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\AhmedScripts\EnemyBehaviour.cs" />
     <Compile Include="Assets\Scripts\AhmedScripts\Stats.cs" />
+    <Compile Include="Assets\Scripts\AhmedScripts\Teleporter.cs" />
     <Compile Include="Assets\Scripts\AhmedScripts\Teleporters.cs" />
+    <Compile Include="Assets\Scripts\AhmedScripts\dummyPlayerScript.cs" />
+    <Compile Include="Assets\Scripts\AhmedScripts\enemyBullet.cs" />
+    <Compile Include="Assets\Scripts\AhmedScripts\hidingSpot.cs" />
     <Compile Include="Assets\Scripts\JonoScripts\BulletScript.cs" />
     <Compile Include="Assets\Scripts\JonoScripts\EnemyDeath.cs" />
     <Compile Include="Assets\Scripts\JonoScripts\GunPos.cs" />
     <Compile Include="Assets\Scripts\JonoScripts\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\JonoScripts\PlayerShoot.cs" />
-    <Compile Include="Assets\Teleporter.cs" />
-    <Compile Include="Assets\dummyPlayerScript.cs" />
+    <Compile Include="Assets\Scripts\cameraFollow.cs" />
+    <Compile Include="Assets\mainMenuButtons.cs" />
+    <Compile Include="Assets\navSystem.cs" />
+    <Compile Include="Assets\pauseMenu.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
