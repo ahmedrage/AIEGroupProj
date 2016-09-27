@@ -6,7 +6,7 @@ public class hidingSpot : MonoBehaviour {
 	public int hidingLayerIndex = 10;
 	public Color hidingColor;
 	public SpriteRenderer m_spriteRenderer;
-
+	public AudioSource hidingSound;
 	Color initialColor;
 	// Use this for initialization
 	void Start () {
@@ -19,6 +19,7 @@ public class hidingSpot : MonoBehaviour {
 		if (other.gameObject.layer == playerLayerIndex) {   
 			m_spriteRenderer.color = hidingColor;
 			other.gameObject.layer = hidingLayerIndex;
+			hidingSound.Play ();
 		}
 	}
 	void OnTriggerExit2D (Collider2D other) {
