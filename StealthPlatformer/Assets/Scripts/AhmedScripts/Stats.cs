@@ -16,6 +16,8 @@ public class Stats : MonoBehaviour {
 	public int playerLevel;
 	GameObject deathScreen;
 	public AudioSource deathSound;
+	public AudioSource shootSound;
+	public float playerAmmo;
 	// Use this for initialization
 	void Start () {
 		if (deathScreen == null) {
@@ -24,6 +26,9 @@ public class Stats : MonoBehaviour {
 		deathScreen.SetActive (false);
 
 		player = GameObject.FindGameObjectWithTag ("Player").transform;
+		playerAmmo = player.GetComponent<PlayerShoot> ().Ammo;
+		Physics2D.IgnoreLayerCollision (13, 9);
+		Physics2D.IgnoreLayerCollision (13, 10);
 
 	}
 	
@@ -37,22 +42,28 @@ public class Stats : MonoBehaviour {
 		}
 
 		if (player != null) {
-			float yPos = player.position.y;
-			int i = 0;
-			foreach (var Level in levelArray) {
-				if (i == 0) {
-					if (Mathf.Round (yPos) == Mathf.Round (levelArray [i].teleporter1.position.y) || yPos < levelArray [i + 1].teleporter1.position.y) {
-						playerLevel = i;
-						return;
-					}
-				} else {
-					if (Mathf.Round (yPos) == Mathf.Round (levelArray [i].teleporter1.position.y) || (yPos < levelArray [i + 1].teleporter1.position.y && yPos > levelArray [i - 1].teleporter1.position.y)) {
-						playerLevel = i;
-						return;
-					}
-				}
-				i++;
-			}	
+			if (playerAmmo > 0 && Input.GetButtonDown ("Fire1")) {
+				shootSound.Play (); 
+			}
+			playerAmmo = player.GetComponent<PlayerShoot> ().Ammo;
+			playerLevel = checkLevel (player.transform.position.y);
 		}
+	}
+
+	public int checkLevel (float yPos) {
+		int i = 0;
+		foreach (var Level in levelArray) {
+			if (i == 0) {
+				if (Mathf.Round (yPos) == Mathf.Round (levelArray [i].teleporter1.position.y) || yPos < levelArray [i + 1].teleporter1.position.y) {
+					return i;
+				}
+			} else {
+				if (Mathf.Round (yPos) == Mathf.Round (levelArray [i].teleporter1.position.y) || (yPos < levelArray [i + 1].teleporter1.position.y && yPos > levelArray [i - 1].teleporter1.position.y)) {
+					return i;
+				}
+			}
+			i++;
+		}
+		return 0;
 	}
 }

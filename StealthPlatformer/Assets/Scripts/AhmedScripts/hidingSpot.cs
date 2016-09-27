@@ -16,7 +16,7 @@ public class hidingSpot : MonoBehaviour {
 	
 	// Update is called once per frame
 	void OnTriggerEnter2D (Collider2D other) {
-		if (other.gameObject.layer == playerLayerIndex) {   
+		if (other.gameObject.layer == playerLayerIndex && other.gameObject.tag == "Player") {   
 			m_spriteRenderer.color = hidingColor;
 			other.gameObject.layer = hidingLayerIndex;
 			hidingSound.Play ();

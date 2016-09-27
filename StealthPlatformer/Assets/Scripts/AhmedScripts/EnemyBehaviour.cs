@@ -28,7 +28,16 @@ public class EnemyBehaviour : MonoBehaviour {
 	public float randomX; //
 	public float randomY;
 	public float shootFreezeTime;
+	public AudioSource alertSound;
+	public GameObject gun;
+	public Animator gunAnimator;
+	public Sprite shootSprite;
+	public float shootAnimTime;
 
+	float shootAnimTimeLeft;
+	Sprite initialGunSprite;
+	public bool isShooting = false;
+	bool playingAlert;
 	bool canShoot = true; // If the enemy can currently shoot
 	float initialSpeed;
 	Transform enemyCanvas;
@@ -43,6 +52,8 @@ public class EnemyBehaviour : MonoBehaviour {
 	float distanceFromPlayer;
 
 	void Start () {
+		Physics2D.IgnoreLayerCollision (11, 11);
+		Physics2D.IgnoreLayerCollision (12, 12);
 		Physics2D.IgnoreLayerCollision (10, 11);
 		initialSpeed = m_Speed;
 		enemyCanvas = transform.FindChild ("Canvas");
@@ -50,10 +61,18 @@ public class EnemyBehaviour : MonoBehaviour {
 		m_rigidbody2d = GetComponent<Rigidbody2D> ();
 		detectionImage = transform.FindChild("Canvas").transform.FindChild ("detectionBar").GetComponent<Image>();
 		teleportersScript = GameObject.FindGameObjectWithTag ("Gm").GetComponent<Stats> ();
-		firePoint = transform.FindChild ("FirePoint");
+		initialGunSprite = gun.GetComponent<SpriteRenderer> ().sprite;
+		//firePoint = transform.FindChild ("FirePoint");
 	}
 
 	void Update () {
+		if (Time.time > shootAnimTimeLeft) {
+			gun.GetComponent<SpriteRenderer> ().sprite = initialGunSprite;
+		} else {
+			gun.GetComponent<SpriteRenderer> ().sprite = shootSprite;
+		}
+
+		level = teleportersScript.checkLevel (transform.position.y);
 		if (target != null) {
 			distanceFromPlayer = Vector2.Distance (transform.position, target.transform.position);
 
@@ -63,7 +82,7 @@ public class EnemyBehaviour : MonoBehaviour {
 				transform.localScale = new Vector3 (Mathf.Abs (transform.localScale.x), transform.localScale.y, 1);
 			}
 
-			playerLevel = GameObject.FindGameObjectWithTag ("Player").GetComponent<dummyPlayerScript> ().level;
+			playerLevel = teleportersScript.playerLevel;
 			if (playerDetected == false && detectionLevel > 0 && detectionLevel < 100 && teleportersScript.detected == false) {
 				Detect (-1);
 			} else if (playerDetected == true && detectionLevel < 100 && teleportersScript.detected == false) {
@@ -76,6 +95,9 @@ public class EnemyBehaviour : MonoBehaviour {
 			if (enemyState == state.Patrolling) {
 				Patrol ();
 			} else if (enemyState == state.Alert) {
+				if (!alertSound.isPlaying) {
+					alertSound.Play ();
+				}
 				direction = 0;
 				if (detectionLevel == 0) {
 					enemyState = state.Patrolling;
@@ -89,8 +111,11 @@ public class EnemyBehaviour : MonoBehaviour {
 			} else if (enemyState == state.Switching) {
 				SwitchLevel ();
 			}
-
-			m_rigidbody2d.velocity = Vector2.right * direction * m_Speed;
+			//isShooting = false;
+			if (enemyState == state.Persuing) {
+				gameObject.layer = 12;
+			}
+				m_rigidbody2d.velocity = Vector2.right * direction * m_Speed;
 		} else {
 			print ("Player not found");
 		}
@@ -151,8 +176,9 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 
 	void Shoot () {
-
 		if (Time.time > timeToShoot && Vector2.Distance(transform.position, target.transform.position) < maxDist) {
+			shootAnimTimeLeft = Time.time + shootAnimTime;
+			teleportersScript.shootSound.Play ();
 			timeToShoot = Time.time + fireDelay;
 			StartCoroutine (waitAndMove (shootFreezeTime));
 			print ("Test");
@@ -161,6 +187,8 @@ public class EnemyBehaviour : MonoBehaviour {
 			Vector2 dir = targetPos - shot.transform.position;
 			float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
 			shot.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
+			isShooting = true;
+			gunAnimator.SetBool ("isShooting", isShooting);
 		}
 	}
 
@@ -178,7 +206,7 @@ public class EnemyBehaviour : MonoBehaviour {
 
 			if (transform.position.x >= targetTeleporter.position.x) {
 				direction = -1;
-			} else if (transform.position.x <= targetTeleporter.position.x) { 
+			} else if (transform.position.x <= targetTeleporter.position.x) {
 				direction = 1;
 			}
 		}
@@ -189,11 +217,10 @@ public class EnemyBehaviour : MonoBehaviour {
 	public void Teleport() {
 		if (enemyState == state.Switching) {
 			if (playerLevel > level) {
-				transform.position = new Vector2 (transform.position.x, teleportersScript.levelArray [level + 1].teleporter1.transform.position.y);
-				level++;
+				transform.position = new Vector2 (teleportersScript.levelArray [level + 1].teleporter1.transform.position.x, teleportersScript.levelArray [level + 1].teleporter1.transform.position.y);
 			} else if (playerLevel < level) {
-				transform.position = new Vector2 (transform.position.x, teleportersScript.levelArray [level - 1].teleporter1.transform.position.y);
-				level--;
+				transform.position = new Vector2 (teleportersScript.levelArray [level - 1].teleporter1.transform.position.x, teleportersScript.levelArray [level - 1].teleporter1.transform.position.y);
+				print ("Test1");
 			} else {
 				enemyState = state.Persuing;
 			}
