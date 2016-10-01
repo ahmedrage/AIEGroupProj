@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 [System.Serializable]
@@ -18,6 +19,9 @@ public class Stats : MonoBehaviour {
 	public AudioSource deathSound;
 	public AudioSource shootSound;
 	public float playerAmmo;
+	public int teleporterPickups;
+	public Text pickUpText;
+	public Text ammoText;
 	// Use this for initialization
 	void Start () {
 		if (deathScreen == null) {
@@ -34,6 +38,8 @@ public class Stats : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		pickUpText.text = "Keys: " + teleporterPickups.ToString ();
+		ammoText.text = "Ammo: " + playerAmmo.ToString ();
 		if (isDead) {
 			deathScreen.SetActive (true);
 			if (Input.GetKeyDown (KeyCode.R)) {
@@ -56,8 +62,12 @@ public class Stats : MonoBehaviour {
 			if (i == 0) {
 				if (Mathf.Round (yPos) == Mathf.Round (levelArray [i].teleporter1.position.y) || yPos < levelArray [i + 1].teleporter1.position.y) {
 					return i;
+				} 
+			} else if (i == levelArray.Length - 1) {
+				if (Mathf.Round (yPos) == Mathf.Round (levelArray [i].teleporter1.position.y) || yPos > levelArray [i - 1].teleporter1.position.y) {
+					return i;
 				}
-			} else {
+			}else {
 				if (Mathf.Round (yPos) == Mathf.Round (levelArray [i].teleporter1.position.y) || (yPos < levelArray [i + 1].teleporter1.position.y && yPos > levelArray [i - 1].teleporter1.position.y)) {
 					return i;
 				}
