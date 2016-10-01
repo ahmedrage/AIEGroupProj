@@ -64,6 +64,7 @@
      <Compile Include="Assets\mainMenuButtons.cs" />
      <Compile Include="Assets\navSystem.cs" />
      <Compile Include="Assets\pauseMenu.cs" />
+     <Compile Include="Assets\pickUp.cs" />
      <Compile Include="Assets\playerAnimation.cs" />
      <None Include="Assets\Prefabs\Player Prefab Guide.txt" />
  <Reference Include="UnityEngine.UI">

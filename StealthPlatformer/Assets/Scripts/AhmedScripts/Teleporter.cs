@@ -19,7 +19,7 @@ public class Teleporter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		inRange = Vector2.Distance (player.transform.position, transform.position) < maxTeleporterRange & Time.time > timeToTeleport;
+		inRange = Vector2.Distance (player.transform.position, transform.position) < maxTeleporterRange & Time.time > timeToTeleport && teleportersScript.teleporterPickups > 0;
 		prompt.SetActive (inRange);
 		timeToTeleport = teleportersScript.timeToTeleport;
 		playerLevel = teleportersScript.playerLevel;
@@ -41,6 +41,7 @@ public class Teleporter : MonoBehaviour {
 				timeToTeleport = Time.time + teleportDelay;
 				teleportersScript.timeToTeleport = timeToTeleport;
 				teleportSound.Play ();
+				teleportersScript.teleporterPickups--;
 			} else if (Input.GetKeyDown (KeyCode.S) && playerLevel > 0) {
 				float xPos;
 				float tp1XPos = teleportersScript.levelArray [playerLevel - 1].teleporter1.transform.position.x;
@@ -55,7 +56,7 @@ public class Teleporter : MonoBehaviour {
 				timeToTeleport = Time.time + teleportDelay;
 				teleportersScript.timeToTeleport = timeToTeleport;
 				teleportSound.Play ();
-			
+				teleportersScript.teleporterPickups--;
 			}
 		}
 	}
