@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\LastLevel.cs" />
      <Compile Include="Assets\Scripts\AhmedScripts\EnemyBehaviour.cs" />
      <Compile Include="Assets\Scripts\AhmedScripts\FPSDisplay.cs" />
      <Compile Include="Assets\Scripts\AhmedScripts\Stats.cs" />
@@ -63,6 +64,8 @@
      <Compile Include="Assets\mainMenuButtons.cs" />
      <Compile Include="Assets\navSystem.cs" />
      <Compile Include="Assets\pauseMenu.cs" />
+     <Compile Include="Assets\playerAnimation.cs" />
+     <None Include="Assets\Prefabs\Player Prefab Guide.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

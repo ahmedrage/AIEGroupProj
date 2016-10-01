@@ -19,6 +19,7 @@ public class pauseMenu : MonoBehaviour {
 
 	public void loadMenu () {
 		SceneManager.LoadScene (0);
+		GameObject.FindGameObjectWithTag ("LastLevel").GetComponent<LastLevel> ().lastLevel = SceneManager.GetActiveScene ().buildIndex;
 	}
 	public void resumeGame (bool isEnable) {
 		pausePannel.SetActive (isEnable);

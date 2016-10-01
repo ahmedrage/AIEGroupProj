@@ -1,0 +1,3 @@
+Hello future Jono/Ahmed
+
+make sure that the player has the playerAnimation script attatched

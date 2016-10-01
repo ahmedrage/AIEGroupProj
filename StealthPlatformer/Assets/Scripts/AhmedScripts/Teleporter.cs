@@ -9,6 +9,8 @@ public class Teleporter : MonoBehaviour {
 	public float teleportDelay;
 	float timeToTeleport;
 	public AudioSource teleportSound;
+	public GameObject prompt;
+	bool inRange;
 	// Use this for initialization
 	void Start () {
 		player = GameObject.FindGameObjectWithTag ("Player");
@@ -17,12 +19,14 @@ public class Teleporter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		inRange = Vector2.Distance (player.transform.position, transform.position) < maxTeleporterRange & Time.time > timeToTeleport;
+		prompt.SetActive (inRange);
 		timeToTeleport = teleportersScript.timeToTeleport;
 		playerLevel = teleportersScript.playerLevel;
 		if (player == null) {
 			return;
 		}
-		if (Vector2.Distance (player.transform.position, transform.position) < maxTeleporterRange & Time.time > timeToTeleport) {
+		if (inRange) {
 				
 			if (Input.GetKeyDown (KeyCode.W) && playerLevel < teleportersScript.levelArray.Length - 1) {
 				float xPos;
@@ -60,7 +64,6 @@ public class Teleporter : MonoBehaviour {
 	void OnTriggerStay2D (Collider2D other) {
 		if (other.gameObject.tag == "EnemyTeleporterCollider" && other.transform.parent.GetComponent<EnemyBehaviour>() != null) {
 			other.gameObject.transform.parent.GetComponent<EnemyBehaviour> ().Teleport ();
-
 		}
 	}
 }
