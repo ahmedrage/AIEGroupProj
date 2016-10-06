@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\AhmedScripts\EnemyBehaviour.cs" />
+    <Compile Include="Assets\Scripts\AhmedScripts\FPSDisplay.cs" />
     <Compile Include="Assets\Scripts\AhmedScripts\Stats.cs" />
     <Compile Include="Assets\Scripts\AhmedScripts\Teleporter.cs" />
     <Compile Include="Assets\Scripts\AhmedScripts\Teleporters.cs" />
@@ -78,9 +79,12 @@
     <Compile Include="Assets\Scripts\AhmedScripts\hidingSpot.cs" />
     <Compile Include="Assets\Scripts\JonoScripts\BulletScript.cs" />
     <Compile Include="Assets\Scripts\JonoScripts\EnemyDeath.cs" />
+    <Compile Include="Assets\Scripts\JonoScripts\GameWinning.cs" />
     <Compile Include="Assets\Scripts\JonoScripts\GunPos.cs" />
     <Compile Include="Assets\Scripts\JonoScripts\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\JonoScripts\PlayerShoot.cs" />
+    <Compile Include="Assets\Scripts\JonoScripts\TeleporterKey.cs" />
+    <Compile Include="Assets\Scripts\JonoScripts\gamewinning2.cs" />
     <Compile Include="Assets\Scripts\cameraFollow.cs" />
     <Compile Include="Assets\destroyObject.cs" />
     <Compile Include="Assets\mainMenuButtons.cs" />
