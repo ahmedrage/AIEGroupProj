@@ -10,8 +10,10 @@ public class BulletScript : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         Rigidbody2D targetRigidbody2D = other.gameObject.GetComponent<Rigidbody2D>();
-        // Add Damage Code Here
-        Destroy(gameObject);
+		if (other.gameObject.tag != "Enemey") {
+			Destroy(gameObject);
+		}
+        
     }
     // Update is called once per frame
     void Update()

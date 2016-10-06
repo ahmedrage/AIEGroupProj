@@ -1,26 +1,27 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\JonoScripts\PlayerMove.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\AhmedScripts\Teleporter.cs">
     <Files>
       <File FileName="Assets\Scripts\AhmedScripts\EnemyBehaviour.cs" Line="33" Column="1" />
-      <File FileName="Assets\mainMenuButtons.cs" Line="6" Column="28" />
-      <File FileName="Assets\lastLevel.cs" Line="5" Column="26" />
-      <File FileName="Assets\pickUp.cs" Line="17" Column="53" />
-      <File FileName="Assets\Scripts\AhmedScripts\Stats.cs" Line="42" Column="53" />
-      <File FileName="Assets\pauseMenu.cs" Line="6" Column="32" />
-      <File FileName="Assets\Scripts\AhmedScripts\Teleporter.cs" Line="59" Column="42" />
-      <File FileName="Assets\Scripts\JonoScripts\PlayerShoot.cs" Line="33" Column="126" />
+      <File FileName="Assets\Scripts\JonoScripts\EnemyDeath.cs" Line="15" Column="31" />
+      <File FileName="Assets\Scripts\JonoScripts\BulletScript.cs" Line="16" Column="9" />
+      <File FileName="Assets\mainMenuButtons.cs" Line="1" Column="1" />
+      <File FileName="Assets\lastLevel.cs" Line="1" Column="1" />
+      <File FileName="Assets\pickUp.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\AhmedScripts\Stats.cs" Line="41" Column="1" />
+      <File FileName="Assets\pauseMenu.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\AhmedScripts\Teleporter.cs" Line="23" Column="11" />
+      <File FileName="Assets\Scripts\JonoScripts\PlayerShoot.cs" Line="41" Column="78" />
       <File FileName="Assets\playerAnimation.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\AhmedScripts\dummyPlayerScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\AhmedScripts\Teleporters.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\JonoScripts\BulletScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\AhmedScripts\enemyBullet.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\AhmedScripts\hidingSpot.cs" Line="1" Column="1" />
       <File FileName="Assets\navSystem.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\cameraFollow.cs" Line="1" Column="1" />
       <File FileName="Assets\destroyObject.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\AhmedScripts\FPSDisplay.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\JonoScripts\PlayerMove.cs" Line="21" Column="46" />
+      <File FileName="Assets\Scripts\JonoScripts\PlayerMove.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

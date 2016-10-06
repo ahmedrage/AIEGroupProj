@@ -12,9 +12,12 @@ public class EnemyDeath : MonoBehaviour {
        if  (other.gameObject.tag == "Bullet") 
         {
             Rigidbody2D targetRigidbody2D = other.gameObject.GetComponent<Rigidbody2D>();
+			Destroy (other.gameObject);
             Destroy(gameObject);
         }
     }
+
+
     // Update is called once per frame
     void Update () {
 	

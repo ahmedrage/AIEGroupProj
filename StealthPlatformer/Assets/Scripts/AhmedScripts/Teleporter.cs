@@ -19,6 +19,10 @@ public class Teleporter : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (player == null) {
+			return;
+		}
+		
 		inRange = Vector2.Distance (player.transform.position, transform.position) < maxTeleporterRange & Time.time > timeToTeleport && teleportersScript.teleporterPickups > 0;
 		prompt.SetActive (inRange);
 		timeToTeleport = teleportersScript.timeToTeleport;
