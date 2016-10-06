@@ -16,7 +16,6 @@ public class enemyBullet : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D other) {
-		Rigidbody2D targetRigidbody2D = other.gameObject.GetComponent<Rigidbody2D>();
 		Destroy(gameObject);
 	}
 }

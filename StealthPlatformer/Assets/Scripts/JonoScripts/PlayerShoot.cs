@@ -25,7 +25,7 @@ public class PlayerShoot : MonoBehaviour
 		}
 		
         fireRate -= 0.1f;
-        if (Input.GetButtonUp("Fire1"))
+		if (Input.GetButtonUp("Fire1") && Time.timeScale == 1)
         {
             if (fireRate <= 0 && Ammo > 0)
             {

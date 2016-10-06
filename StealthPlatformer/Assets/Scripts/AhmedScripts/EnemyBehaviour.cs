@@ -120,7 +120,7 @@ public class EnemyBehaviour : MonoBehaviour {
 		}
 	}
 
-	void Patrol () {
+	void Patrol () { // Runs when the enemy is in the patrolling state
 		if (transform.position.x >= patrolPoints [0].position.x) {
 			direction = -1;
 		} else if (transform.position.x <= patrolPoints[1].position.x && transform.position.x < patrolPoints[0].position.x) {
@@ -128,7 +128,7 @@ public class EnemyBehaviour : MonoBehaviour {
 		}
 	}
 
-	void Detect (int target) {
+	void Detect (int target) { // Is played while the enemy is detecting the player
 		detectionLevel = Mathf.SmoothDamp (detectionLevel, target, ref detectionVelocity, detectionTime);
 		detectionLevel = Mathf.Clamp (detectionLevel, 0, 100);
 		detectionImage.fillAmount = detectionLevel / 100;
@@ -140,20 +140,20 @@ public class EnemyBehaviour : MonoBehaviour {
 		}
 	}
 
-	void OnTriggerStay2D (Collider2D other) {
+	void OnTriggerStay2D (Collider2D other) { // detects player
 		if (other != null && other.gameObject.tag == "Player" && other.gameObject.layer == 9) {
 			target = other.gameObject;
 			playerDetected = true;
 		}
 	}
 
-	void OnTriggerExit2D (Collider2D other) {
+	void OnTriggerExit2D (Collider2D other) { // player is no longer being detected
 		if (other != null && other.gameObject.tag == "Player") {
 			playerDetected = false;
 		}
 	}
 
-	void Pursue () {
+	void Pursue () { // When the enemy is persuing the player
 		if (playerLevel != level) {
 			enemyState = state.Switching;
 		} else {
@@ -174,7 +174,7 @@ public class EnemyBehaviour : MonoBehaviour {
 		}
 	}
 
-	void Shoot () {
+	void Shoot () { // Played when the enemy shoots at the player
 		if (Time.time > timeToShoot && Vector2.Distance(transform.position, target.transform.position) < maxDist) {
 			shootAnimTimeLeft = Time.time + shootAnimTime;
 			teleportersScript.shootSound.Play ();
@@ -190,7 +190,7 @@ public class EnemyBehaviour : MonoBehaviour {
 		}
 	}
 
-	void SwitchLevel () {
+	void SwitchLevel () { // Played when the enemy needs to switch level to catch the player
 		float TeleporterDistance1 = Vector2.Distance(transform.position, teleportersScript.levelArray[level].teleporter1.position);
 		float TeleporterDistance2 = Vector2.Distance(transform.position, teleportersScript.levelArray[level].teleporter2.position);
 		Transform targetTeleporter;
@@ -212,7 +212,7 @@ public class EnemyBehaviour : MonoBehaviour {
 
 
 
-	public void Teleport() {
+	public void Teleport() { //When the enemy needs to teleport from one level to another
 		if (enemyState == state.Switching) {
 			if (playerLevel > level) {
 				transform.position = new Vector2 (teleportersScript.levelArray [level + 1].teleporter1.transform.position.x, teleportersScript.levelArray [level + 1].teleporter1.transform.position.y);
@@ -225,7 +225,7 @@ public class EnemyBehaviour : MonoBehaviour {
 		}
 	}
 
-	IEnumerator waitAndMove (float waitTime) {
+	IEnumerator waitAndMove (float waitTime) { // A delay to move for when the player shoots
 		m_Speed = 0;
 		yield return new WaitForSeconds (waitTime);
 		m_Speed = initialSpeed;
