@@ -1,0 +1,9 @@
+PLAYER CONTROLS
+----------------
+
+Player Movement - WASD
+Shoot 		- LMB
+Jump		- SpaceBar
+Teleport Up	- W
+Teleport Down	- S
+Interact 	- E

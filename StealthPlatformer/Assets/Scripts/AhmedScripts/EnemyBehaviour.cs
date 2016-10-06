@@ -30,7 +30,6 @@ public class EnemyBehaviour : MonoBehaviour {
 	public float shootFreezeTime;
 	public AudioSource alertSound;
 	public GameObject gun;
-	public Animator gunAnimator;
 	public Sprite shootSprite;
 	public float shootAnimTime;
 
@@ -188,7 +187,6 @@ public class EnemyBehaviour : MonoBehaviour {
 			float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
 			shot.transform.rotation = Quaternion.AngleAxis (angle, Vector3.forward);
 			isShooting = true;
-			gunAnimator.SetBool ("isShooting", isShooting);
 		}
 	}
 

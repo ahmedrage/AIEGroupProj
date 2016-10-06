@@ -4,7 +4,7 @@ using System.Collections;
 
 public class mainMenuButtons : MonoBehaviour {
 	public void StartGame () {
-		SceneManager.LoadScene (1);	
+		SceneManager.LoadScene (GameObject.FindGameObjectWithTag("LastLevel").GetComponent<LastLevel>().lastLevel);	
 	}
 	public void ExitGame () {
 		Application.Quit ();
