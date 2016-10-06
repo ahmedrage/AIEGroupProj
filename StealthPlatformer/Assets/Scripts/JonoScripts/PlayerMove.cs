@@ -9,6 +9,7 @@ public class PlayerMove : MonoBehaviour
     public float m_Speed = 10; //Speed of the player
     private float m_MovementInputValue; //Value of movement input
     public Rigidbody2D m_Rigidbody;
+    Vector2 movement;
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody2D>(); //waken the rigidbody of the player
@@ -33,7 +34,7 @@ public class PlayerMove : MonoBehaviour
 
     private void move()
     {
-        Vector2 movement = new Vector2(Input.GetAxis("Horizontal") * m_Speed * Time.deltaTime, m_Rigidbody.velocity.y);
+        movement = new Vector2(Input.GetAxis("Horizontal") * m_Speed * Time.deltaTime, m_Rigidbody.velocity.y);
         m_Rigidbody.velocity = movement;
     }
     // Use this for initialization
@@ -48,9 +49,18 @@ public class PlayerMove : MonoBehaviour
         m_Rigidbody = GetComponent<Rigidbody2D>(); //Fix for if the away function breaks
         
     // Update is called once per frame
-        if (Input.GetKeyDown(KeyCode.UpArrow) && Mathf.Abs(m_Rigidbody.velocity.y) < 0.1)  //makes player jump
+        if (Input.GetButtonDown("Jump") && Mathf.Abs(m_Rigidbody.velocity.y) < 0.1)  //makes player jump
         {
             GetComponent<Rigidbody2D>().AddForce(jumpHeight, ForceMode2D.Impulse);
+        }
+
+
+        if (movement.x > 0)
+        {
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y);
+        } else if (movement.x < 0)
+        {
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x) * -1, transform.localScale.y);
         }
     }
     private void OnCollisionEnter2D(Collision2D other)

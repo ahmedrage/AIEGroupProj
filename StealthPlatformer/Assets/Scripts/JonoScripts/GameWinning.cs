@@ -1,20 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyDeath : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
+public class GameWinning : MonoBehaviour {
+    public int Objectivereached = 0;
+    // Use this for initialization
     private void OnCollisionEnter2D(Collision2D other)
     {
-       if  (other.gameObject.tag == "Bullet") 
+        if (other.gameObject.tag == "Player")
         {
-            Rigidbody2D targetRigidbody2D = other.gameObject.GetComponent<Rigidbody2D>();
+            Objectivereached =+ 1;
             Destroy(gameObject);
+            print("woot1");
         }
     }
+
     // Update is called once per frame
     void Update () {
 	

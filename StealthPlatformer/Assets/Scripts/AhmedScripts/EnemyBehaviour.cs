@@ -193,15 +193,15 @@ public class EnemyBehaviour : MonoBehaviour {
 	}
 
 	void SwitchLevel () {
-		float TeleporterDistance1 = Vector2.Distance(transform.position, teleportersScript.levelArray[playerLevel].teleporter1.position);
-		float TeleporterDistance2 = Vector2.Distance(transform.position, teleportersScript.levelArray[playerLevel].teleporter2.position);
+		float TeleporterDistance1 = Vector2.Distance(transform.position, teleportersScript.levelArray[level].teleporter1.position);
+		float TeleporterDistance2 = Vector2.Distance(transform.position, teleportersScript.levelArray[level].teleporter2.position);
 		Transform targetTeleporter;
 
 		if (playerLevel != level) {
 			if (TeleporterDistance1 < TeleporterDistance2) {
-				targetTeleporter = teleportersScript.levelArray [playerLevel].teleporter1;
+				targetTeleporter = teleportersScript.levelArray [level].teleporter1;
 			} else {
-				targetTeleporter = teleportersScript.levelArray [playerLevel].teleporter2;
+				targetTeleporter = teleportersScript.levelArray [level].teleporter2;
 			}
 
 			if (transform.position.x >= targetTeleporter.position.x) {
